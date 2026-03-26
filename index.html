@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maison de caractère à vendre — 12 rue de Mailly, Villepreux</title>
+  <meta name="description" content="Maison de caractère XVIIIe siècle à vendre à Villepreux Village. 160 m², 6 pièces, 4 chambres, piscine, jardin 350 m². 850 000 €.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            stone: {
+              850: '#2c2520',
+            },
+            gold: {
+              50: '#fdf8ef',
+              100: '#f9ecd5',
+              200: '#f2d6a8',
+              300: '#e9b96e',
+              400: '#e2a04a',
+              500: '#d4862f',
+              600: '#b86a25',
+              700: '#995022',
+              800: '#7d4122',
+              900: '#67361f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-stone-50 font-sans text-stone-800">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="font-display text-xl text-white font-semibold tracking-wide">12 rue de Mailly</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#bien" class="text-white/80 hover:text-white text-sm tracking-wide transition-colors">Le bien</a>
+        <a href="#galerie" class="text-white/80 hover:text-white text-sm tracking-wide transition-colors">Photos</a>
+        <a href="#localisation" class="text-white/80 hover:text-white text-sm tracking-wide transition-colors">Localisation</a>
+        <a href="#contact" class="bg-gold-400 hover:bg-gold-500 text-stone-900 px-5 py-2 rounded-full text-sm font-medium transition-colors">Nous contacter</a>
+      </div>
+      <button id="menu-toggle" class="md:hidden text-white" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-stone-900/95 backdrop-blur-sm px-6 pb-4">
+      <a href="#bien" class="block py-2 text-white/80 hover:text-white text-sm">Le bien</a>
+      <a href="#galerie" class="block py-2 text-white/80 hover:text-white text-sm">Photos</a>
+      <a href="#localisation" class="block py-2 text-white/80 hover:text-white text-sm">Localisation</a>
+      <a href="#contact" class="block py-2 text-gold-400 font-medium text-sm">Nous contacter</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-stone-900/60 via-stone-900/40 to-stone-900/80 z-10"></div>
+    <div class="absolute inset-0 hero-placeholder bg-stone-700 flex items-center justify-center">
+      <div class="text-center text-stone-500">
+        <svg class="w-24 h-24 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 22V12h6v10"/>
+        </svg>
+        <p class="text-sm opacity-40">Photo principale à ajouter</p>
+      </div>
+    </div>
+    <div class="relative z-20 text-center px-6 max-w-4xl mx-auto">
+      <p class="text-gold-300 font-sans text-sm tracking-[0.3em] uppercase mb-4 animate-fade-in">Villepreux Village — Maison de caractère</p>
+      <h1 class="font-display text-5xl md:text-7xl text-white font-bold leading-tight mb-6 animate-fade-in-up">
+        Une demeure<br>d'exception
+      </h1>
+      <p class="text-white/70 text-lg md:text-xl font-light mb-8 max-w-2xl mx-auto animate-fade-in-up delay-200">
+        Maison du XVIIIe siècle, 160 m² habitables, piscine et jardin paysager au cœur de Villepreux Village
+      </p>
+      <div class="animate-fade-in-up delay-400">
+        <span class="inline-block bg-white/10 backdrop-blur-sm border border-white/20 text-white font-display text-3xl md:text-4xl font-bold px-8 py-4 rounded-2xl">
+          850 000 €
+        </span>
+      </div>
+      <div class="mt-10 animate-fade-in-up delay-600">
+        <a href="#bien" class="inline-flex items-center gap-2 text-white/60 hover:text-white text-sm transition-colors">
+          Découvrir le bien
+          <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Points forts -->
+  <section id="bien" class="py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-gold-600 text-sm tracking-[0.2em] uppercase mb-3">Les points forts</p>
+        <h2 class="font-display text-3xl md:text-5xl font-bold text-stone-850">Un bien rare à Villepreux</h2>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <!-- Card 1 -->
+        <div class="feature-card bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-lg transition-shadow border border-stone-100">
+          <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gold-50 flex items-center justify-center">
+            <svg class="w-7 h-7 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+            </svg>
+          </div>
+          <p class="font-display text-2xl md:text-3xl font-bold text-stone-850">160 m²</p>
+          <p class="text-stone-500 text-sm mt-1">Surface habitable</p>
+        </div>
+        <!-- Card 2 -->
+        <div class="feature-card bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-lg transition-shadow border border-stone-100">
+          <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gold-50 flex items-center justify-center">
+            <svg class="w-7 h-7 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+            </svg>
+          </div>
+          <p class="font-display text-2xl md:text-3xl font-bold text-stone-850">6 pièces</p>
+          <p class="text-stone-500 text-sm mt-1">dont 4 chambres</p>
+        </div>
+        <!-- Card 3 -->
+        <div class="feature-card bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-lg transition-shadow border border-stone-100">
+          <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gold-50 flex items-center justify-center">
+            <svg class="w-7 h-7 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+            </svg>
+          </div>
+          <p class="font-display text-2xl md:text-3xl font-bold text-stone-850">Piscine</p>
+          <p class="text-stone-500 text-sm mt-1">Profitez de l'été</p>
+        </div>
+        <!-- Card 4 -->
+        <div class="feature-card bg-white rounded-2xl p-6 text-center shadow-sm hover:shadow-lg transition-shadow border border-stone-100">
+          <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gold-50 flex items-center justify-center">
+            <svg class="w-7 h-7 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <p class="font-display text-2xl md:text-3xl font-bold text-stone-850">350 m²</p>
+          <p class="text-stone-500 text-sm mt-1">Jardin arboré</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Description détaillée -->
+  <section class="py-20 md:py-28 bg-stone-850 text-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+        <div>
+          <p class="text-gold-400 text-sm tracking-[0.2em] uppercase mb-3">À propos du bien</p>
+          <h2 class="font-display text-3xl md:text-4xl font-bold mb-6 leading-tight">Une maison de caractère au cœur de Villepreux Village</h2>
+          <div class="space-y-4 text-stone-300 leading-relaxed">
+            <p>
+              Nichée dans le quartier prisé de <strong class="text-white">Villepreux Village</strong>, cette demeure du 
+              <strong class="text-white">XVIIIe siècle</strong> allie le charme de l'ancien au confort moderne. 
+              Avec ses <strong class="text-white">160 m² habitables</strong> répartis en 6 pièces dont 4 chambres, 
+              elle offre un cadre de vie exceptionnel pour les familles.
+            </p>
+            <p>
+              Le jardin paysager de <strong class="text-white">350 m²</strong> avec <strong class="text-white">piscine</strong> 
+              est un véritable havre de paix. La propriété dispose également de <strong class="text-white">3 boxes fermés</strong> 
+              et d'une place de parking extérieure, un atout rare dans le quartier.
+            </p>
+            <p>
+              Idéalement située à <strong class="text-white">500 mètres de l'école Saint-Bernard</strong>, 
+              cette maison est parfaite pour une famille souhaitant s'installer dans un environnement 
+              calme et verdoyant, à proximité de toutes les commodités.
+            </p>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+              <p class="text-gold-400 text-xs tracking-wider uppercase mb-1">Construction</p>
+              <p class="font-display text-lg font-semibold">XVIIIe siècle</p>
+            </div>
+            <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+              <p class="text-gold-400 text-xs tracking-wider uppercase mb-1">Chauffage</p>
+              <p class="font-display text-lg font-semibold">Gaz condensation</p>
+            </div>
+            <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+              <p class="text-gold-400 text-xs tracking-wider uppercase mb-1">Parking</p>
+              <p class="font-display text-lg font-semibold">1 place + 3 boxes</p>
+            </div>
+            <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+              <p class="text-gold-400 text-xs tracking-wider uppercase mb-1">Extérieur</p>
+              <p class="font-display text-lg font-semibold">Piscine + jardin</p>
+            </div>
+            <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+              <p class="text-gold-400 text-xs tracking-wider uppercase mb-1">Proximité</p>
+              <p class="font-display text-lg font-semibold">École 500m</p>
+            </div>
+            <div class="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
+              <p class="text-gold-400 text-xs tracking-wider uppercase mb-1">Idéal</p>
+              <p class="font-display text-lg font-semibold">Famille</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Galerie photos -->
+  <section id="galerie" class="py-20 md:py-28">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-gold-600 text-sm tracking-[0.2em] uppercase mb-3">Galerie</p>
+        <h2 class="font-display text-3xl md:text-5xl font-bold text-stone-850">Visite en images</h2>
+        <p class="text-stone-500 mt-4 max-w-xl mx-auto">Photos bientôt disponibles — Contactez-nous pour organiser une visite</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4" id="gallery-grid">
+        <div class="gallery-placeholder aspect-[4/3] bg-stone-200 rounded-xl flex items-center justify-center group hover:bg-stone-300 transition-colors cursor-pointer md:col-span-2 md:row-span-2 aspect-auto">
+          <div class="text-center text-stone-400 group-hover:text-stone-500 transition-colors">
+            <svg class="w-12 h-12 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-sm font-medium">Façade & Extérieur</p>
+          </div>
+        </div>
+        <div class="gallery-placeholder aspect-[4/3] bg-stone-200 rounded-xl flex items-center justify-center group hover:bg-stone-300 transition-colors cursor-pointer">
+          <div class="text-center text-stone-400 group-hover:text-stone-500 transition-colors">
+            <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs font-medium">Salon</p>
+          </div>
+        </div>
+        <div class="gallery-placeholder aspect-[4/3] bg-stone-200 rounded-xl flex items-center justify-center group hover:bg-stone-300 transition-colors cursor-pointer">
+          <div class="text-center text-stone-400 group-hover:text-stone-500 transition-colors">
+            <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs font-medium">Cuisine</p>
+          </div>
+        </div>
+        <div class="gallery-placeholder aspect-[4/3] bg-stone-200 rounded-xl flex items-center justify-center group hover:bg-stone-300 transition-colors cursor-pointer">
+          <div class="text-center text-stone-400 group-hover:text-stone-500 transition-colors">
+            <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs font-medium">Chambres</p>
+          </div>
+        </div>
+        <div class="gallery-placeholder aspect-[4/3] bg-stone-200 rounded-xl flex items-center justify-center group hover:bg-stone-300 transition-colors cursor-pointer">
+          <div class="text-center text-stone-400 group-hover:text-stone-500 transition-colors">
+            <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs font-medium">Piscine</p>
+          </div>
+        </div>
+        <div class="gallery-placeholder aspect-[4/3] bg-stone-200 rounded-xl flex items-center justify-center group hover:bg-stone-300 transition-colors cursor-pointer">
+          <div class="text-center text-stone-400 group-hover:text-stone-500 transition-colors">
+            <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-xs font-medium">Jardin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Localisation -->
+  <section id="localisation" class="py-20 md:py-28 bg-stone-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <p class="text-gold-600 text-sm tracking-[0.2em] uppercase mb-3">Localisation</p>
+        <h2 class="font-display text-3xl md:text-5xl font-bold text-stone-850">Un emplacement privilégié</h2>
+        <p class="text-stone-500 mt-4 max-w-2xl mx-auto">
+          Au cœur de Villepreux Village, à 500 mètres de l'école Saint-Bernard et à proximité de toutes les commodités
+        </p>
+      </div>
+      <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-stone-200">
+        <div id="map" class="h-[400px] md:h-[500px] w-full"></div>
+        <div class="p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div>
+            <p class="font-display text-xl font-semibold text-stone-850">12 rue de Mailly</p>
+            <p class="text-stone-500">78450 Villepreux — Quartier Villepreux Village</p>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=12+rue+de+Mailly+78450+Villepreux" 
+             target="_blank" 
+             class="inline-flex items-center gap-2 bg-stone-850 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-stone-700 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            Ouvrir dans Google Maps
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-20 md:py-28 bg-stone-850 text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="text-gold-400 text-sm tracking-[0.2em] uppercase mb-3">Intéressé ?</p>
+      <h2 class="font-display text-3xl md:text-5xl font-bold mb-6">Organisez votre visite</h2>
+      <p class="text-stone-300 text-lg mb-12 max-w-2xl mx-auto">
+        N'hésitez pas à nous contacter pour plus d'informations ou pour organiser une visite de cette propriété d'exception.
+      </p>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Téléphone 1 -->
+        <a href="tel:+33662213357" class="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
+          <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gold-400/10 flex items-center justify-center group-hover:bg-gold-400/20 transition-colors">
+            <svg class="w-7 h-7 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+          <p class="font-display text-lg font-semibold mb-1">06 62 21 33 57</p>
+          <p class="text-stone-400 text-sm">Appeler directement</p>
+        </a>
+        <!-- Téléphone 2 -->
+        <a href="tel:+33659996319" class="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
+          <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gold-400/10 flex items-center justify-center group-hover:bg-gold-400/20 transition-colors">
+            <svg class="w-7 h-7 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+          </div>
+          <p class="font-display text-lg font-semibold mb-1">06 59 99 63 19</p>
+          <p class="text-stone-400 text-sm">Appeler directement</p>
+        </a>
+        <!-- Email -->
+        <a href="mailto:fany.revel@gmail.com?subject=Maison%2012%20rue%20de%20Mailly%20Villepreux" class="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all">
+          <div class="w-14 h-14 mx-auto mb-4 rounded-xl bg-gold-400/10 flex items-center justify-center group-hover:bg-gold-400/20 transition-colors">
+            <svg class="w-7 h-7 text-gold-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <p class="font-display text-lg font-semibold mb-1">Email</p>
+          <p class="text-stone-400 text-sm">fany.revel@gmail.com</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-stone-900 text-stone-400 py-8">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <p class="text-sm">Vente de particulier à particulier — 12 rue de Mailly, 78450 Villepreux</p>
+      <p class="text-xs mt-2 text-stone-500">Les informations contenues sur ce site sont données à titre indicatif.</p>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/90 hidden items-center justify-center" role="dialog" aria-modal="true">
+    <button id="lightbox-close" class="absolute top-4 right-4 text-white/70 hover:text-white z-10" aria-label="Fermer">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <img id="lightbox-img" class="max-w-[90vw] max-h-[90vh] object-contain rounded-lg" src="" alt="">
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

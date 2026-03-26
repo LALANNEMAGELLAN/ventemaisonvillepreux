@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code — Maison Villepreux</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Playfair Display', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            stone: { 850: '#2c2520' },
+            gold: {
+              50: '#fdf8ef', 100: '#f9ecd5', 200: '#f2d6a8',
+              300: '#e9b96e', 400: '#e2a04a', 500: '#d4862f',
+              600: '#b86a25', 700: '#995022',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+</head>
+<body class="bg-stone-100 font-sans min-h-screen flex flex-col items-center justify-center p-6">
+
+  <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12 max-w-lg w-full text-center">
+    <p class="text-gold-600 text-sm tracking-[0.2em] uppercase mb-2">QR Code pour vos flyers</p>
+    <h1 class="font-display text-2xl md:text-3xl font-bold text-stone-850 mb-2">Maison à vendre</h1>
+    <p class="text-stone-500 text-sm mb-8">12 rue de Mailly, 78450 Villepreux — 850 000 €</p>
+
+    <div class="mb-6">
+      <label for="url-input" class="block text-left text-sm font-medium text-stone-600 mb-2">URL du site</label>
+      <input 
+        type="url" 
+        id="url-input" 
+        placeholder="https://votre-pseudo.github.io/maison-villepreux" 
+        class="w-full px-4 py-3 border border-stone-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-gold-400 transition-colors"
+      >
+    </div>
+
+    <button 
+      id="generate-btn"
+      class="w-full bg-stone-850 hover:bg-stone-700 text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors mb-8"
+    >
+      Générer le QR Code
+    </button>
+
+    <div id="qr-result" class="hidden">
+      <div class="flex justify-center mb-6">
+        <canvas id="qr-canvas" class="border-8 border-white rounded-lg shadow-lg"></canvas>
+      </div>
+
+      <div class="space-y-3">
+        <button 
+          id="download-png"
+          class="w-full bg-gold-500 hover:bg-gold-600 text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors inline-flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          Télécharger en PNG (pour écran)
+        </button>
+        <button 
+          id="download-print"
+          class="w-full bg-stone-200 hover:bg-stone-300 text-stone-700 px-6 py-3 rounded-xl text-sm font-medium transition-colors inline-flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+          </svg>
+          Télécharger en haute résolution (pour impression)
+        </button>
+      </div>
+
+      <div class="mt-8 p-4 bg-stone-50 rounded-xl">
+        <p class="text-xs text-stone-500 leading-relaxed">
+          <strong class="text-stone-600">Conseil :</strong> Pour vos flyers, utilisez la version haute résolution. 
+          Imprimez le QR code avec une taille minimum de 2×2 cm pour assurer une bonne lisibilité.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <a href="index.html" class="mt-6 text-stone-400 hover:text-stone-600 text-sm transition-colors">
+    ← Retour au site
+  </a>
+
+  <script>
+    const urlInput = document.getElementById('url-input');
+    const generateBtn = document.getElementById('generate-btn');
+    const qrResult = document.getElementById('qr-result');
+    const qrCanvas = document.getElementById('qr-canvas');
+    const downloadPng = document.getElementById('download-png');
+    const downloadPrint = document.getElementById('download-print');
+
+    function generateQR(url) {
+      QRCode.toCanvas(qrCanvas, url, {
+        width: 280,
+        margin: 2,
+        color: {
+          dark: '#2c2520',
+          light: '#ffffff',
+        },
+        errorCorrectionLevel: 'H',
+      }, (error) => {
+        if (error) {
+          alert('Erreur lors de la génération du QR code. Vérifiez l\'URL.');
+          return;
+        }
+        qrResult.classList.remove('hidden');
+      });
+    }
+
+    generateBtn.addEventListener('click', () => {
+      const url = urlInput.value.trim();
+      if (!url) {
+        urlInput.focus();
+        urlInput.classList.add('ring-2', 'ring-red-400', 'border-red-400');
+        setTimeout(() => urlInput.classList.remove('ring-2', 'ring-red-400', 'border-red-400'), 2000);
+        return;
+      }
+      generateQR(url);
+    });
+
+    urlInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') generateBtn.click();
+    });
+
+    function downloadQR(size, filename) {
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      const tempCanvas = document.createElement('canvas');
+      QRCode.toCanvas(tempCanvas, url, {
+        width: size,
+        margin: 2,
+        color: {
+          dark: '#2c2520',
+          light: '#ffffff',
+        },
+        errorCorrectionLevel: 'H',
+      }, () => {
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = tempCanvas.toDataURL('image/png');
+        link.click();
+      });
+    }
+
+    downloadPng.addEventListener('click', () => {
+      downloadQR(400, 'qrcode-maison-villepreux.png');
+    });
+
+    downloadPrint.addEventListener('click', () => {
+      downloadQR(1200, 'qrcode-maison-villepreux-print.png');
+    });
+  </script>
+
+</body>
+</html>
