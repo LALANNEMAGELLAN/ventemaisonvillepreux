@@ -43,16 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const lat = 48.8347;
     const lng = 2.0133;
 
+    const ecoleLat = 48.8437;
+    const ecoleLng = 2.0167;
+
     const map = L.map('map', {
       scrollWheelZoom: false,
-    }).setView([lat, lng], 16);
+    }).setView([(lat + ecoleLat) / 2, (lng + ecoleLng) / 2], 15);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: 19,
     }).addTo(map);
 
-    const customIcon = L.divIcon({
+    const houseIcon = L.divIcon({
       className: 'custom-marker',
       html: `
         <div style="
@@ -74,7 +77,29 @@ document.addEventListener('DOMContentLoaded', () => {
       popupAnchor: [0, -48],
     });
 
-    L.marker([lat, lng], { icon: customIcon })
+    const schoolIcon = L.divIcon({
+      className: 'custom-marker',
+      html: `
+        <div style="
+          width: 42px; height: 42px;
+          background: #4a7c59;
+          border: 3px solid white;
+          border-radius: 50% 50% 50% 0;
+          transform: rotate(-45deg);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          display: flex; align-items: center; justify-content: center;
+        ">
+          <svg style="transform: rotate(45deg); width: 18px; height: 18px;" fill="white" viewBox="0 0 24 24">
+            <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
+          </svg>
+        </div>
+      `,
+      iconSize: [42, 42],
+      iconAnchor: [21, 42],
+      popupAnchor: [0, -42],
+    });
+
+    L.marker([lat, lng], { icon: houseIcon })
       .addTo(map)
       .bindPopup(`
         <div class="map-popup-title">12 rue de Mailly</div>
@@ -82,6 +107,23 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="map-popup-price">850 000 €</div>
       `)
       .openPopup();
+
+    L.marker([ecoleLat, ecoleLng], { icon: schoolIcon })
+      .addTo(map)
+      .bindPopup(`
+        <div class="map-popup-title">École Saint-Bernard</div>
+        <div class="map-popup-address">Chemin de Grand'Maisons, Villepreux</div>
+        <div style="color:#4a7c59; font-weight:600; margin-top:6px; font-size:13px;">≈ 500 m à pied</div>
+      `);
+
+    L.polyline([[lat, lng], [ecoleLat, ecoleLng]], {
+      color: '#d4862f',
+      weight: 3,
+      dashArray: '8, 8',
+      opacity: 0.6,
+    }).addTo(map);
+
+    map.fitBounds([[lat, lng], [ecoleLat, ecoleLng]], { padding: [60, 60] });
   }
 
   // ===== Lightbox =====
