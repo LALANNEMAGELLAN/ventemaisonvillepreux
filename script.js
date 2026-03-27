@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // ===== Leaflet Map =====
   const mapEl = document.getElementById('map');
   if (mapEl && typeof L !== 'undefined') {
-    const lat = 48.8316;
-    const lng = 2.0019;
+    const lat = 48.8347;
+    const lng = 2.0133;
 
     const map = L.map('map', {
       scrollWheelZoom: false,
