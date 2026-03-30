@@ -135,18 +135,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxCounter = document.getElementById('lightbox-counter');
 
   if (lightbox && lightboxClose) {
-    const galleryImages = Array.from(document.querySelectorAll('#gallery-grid img'));
+    let visibleImages = [];
     let currentIndex = 0;
 
-    const showImage = (index) => {
-      currentIndex = (index + galleryImages.length) % galleryImages.length;
-      lightboxImg.src = galleryImages[currentIndex].src;
-      lightboxImg.alt = galleryImages[currentIndex].alt || '';
-      lightboxCounter.textContent = `${currentIndex + 1} / ${galleryImages.length}`;
+    const getVisibleImages = () => {
+      return Array.from(document.querySelectorAll('#gallery-grid .gallery-item:not(.hidden-item) img'));
     };
 
-    const openLightbox = (index) => {
-      showImage(index);
+    const showImage = (index) => {
+      visibleImages = getVisibleImages();
+      if (visibleImages.length === 0) return;
+      currentIndex = (index + visibleImages.length) % visibleImages.length;
+      lightboxImg.src = visibleImages[currentIndex].src;
+      lightboxImg.alt = visibleImages[currentIndex].alt || '';
+      lightboxCounter.textContent = `${currentIndex + 1} / ${visibleImages.length}`;
+    };
+
+    const openLightbox = (clickedImg) => {
+      visibleImages = getVisibleImages();
+      const idx = visibleImages.indexOf(clickedImg);
+      showImage(idx >= 0 ? idx : 0);
       lightbox.classList.remove('hidden');
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -158,9 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = '';
     };
 
-    galleryImages.forEach((img, i) => {
-      img.style.cursor = 'pointer';
-      img.addEventListener('click', () => openLightbox(i));
+    document.getElementById('gallery-grid').addEventListener('click', (e) => {
+      const img = e.target.closest('img');
+      if (img) openLightbox(img);
     });
 
     lightboxPrev.addEventListener('click', () => showImage(currentIndex - 1));
