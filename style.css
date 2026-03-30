@@ -78,12 +78,32 @@
 
 /* ===== Gallery ===== */
 
-.gallery-placeholder {
-  transition: all 0.3s ease;
+.gallery-filter {
+  background: #e7e5e4;
+  color: #78716c;
+  border: 2px solid transparent;
 }
 
-.gallery-placeholder:hover {
-  transform: translateY(-4px);
+.gallery-filter:hover {
+  background: #d6d3d1;
+  color: #44403c;
+}
+
+.gallery-filter.active {
+  background: #2c2520;
+  color: #fff;
+}
+
+.gallery-item {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.gallery-item.hidden-item {
+  display: none;
+}
+
+.gallery-item.fade-in {
+  animation: fadeInUp 0.4s ease forwards;
 }
 
 /* ===== Lightbox ===== */
