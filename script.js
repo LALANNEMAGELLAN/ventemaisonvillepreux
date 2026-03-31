@@ -135,25 +135,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxCounter = document.getElementById('lightbox-counter');
 
   if (lightbox && lightboxClose) {
-    let visibleImages = [];
+    let activeImageSet = [];
     let currentIndex = 0;
 
-    const getVisibleImages = () => {
+    const getGalleryImages = () => {
       return Array.from(document.querySelectorAll('#gallery-grid .gallery-item:not(.hidden-item) img'));
     };
 
-    const showImage = (index) => {
-      visibleImages = getVisibleImages();
-      if (visibleImages.length === 0) return;
-      currentIndex = (index + visibleImages.length) % visibleImages.length;
-      lightboxImg.src = visibleImages[currentIndex].src;
-      lightboxImg.alt = visibleImages[currentIndex].alt || '';
-      lightboxCounter.textContent = `${currentIndex + 1} / ${visibleImages.length}`;
+    const getPlanImages = () => {
+      return Array.from(document.querySelectorAll('#plans-grid img'));
     };
 
-    const openLightbox = (clickedImg) => {
-      visibleImages = getVisibleImages();
-      const idx = visibleImages.indexOf(clickedImg);
+    const showImage = (index) => {
+      if (activeImageSet.length === 0) return;
+      currentIndex = (index + activeImageSet.length) % activeImageSet.length;
+      lightboxImg.src = activeImageSet[currentIndex].src;
+      lightboxImg.alt = activeImageSet[currentIndex].alt || '';
+      lightboxCounter.textContent = `${currentIndex + 1} / ${activeImageSet.length}`;
+    };
+
+    const openLightbox = (clickedImg, imageSet) => {
+      activeImageSet = imageSet;
+      const idx = activeImageSet.indexOf(clickedImg);
       showImage(idx >= 0 ? idx : 0);
       lightbox.classList.remove('hidden');
       lightbox.classList.add('active');
@@ -168,8 +171,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('gallery-grid').addEventListener('click', (e) => {
       const img = e.target.closest('img');
-      if (img) openLightbox(img);
+      if (img) openLightbox(img, getGalleryImages());
     });
+
+    const plansGrid = document.getElementById('plans-grid');
+    if (plansGrid) {
+      plansGrid.addEventListener('click', (e) => {
+        const img = e.target.closest('img');
+        if (img) openLightbox(img, getPlanImages());
+      });
+    }
 
     lightboxPrev.addEventListener('click', () => showImage(currentIndex - 1));
     lightboxNext.addEventListener('click', () => showImage(currentIndex + 1));
