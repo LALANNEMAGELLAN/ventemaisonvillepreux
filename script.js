@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .bindPopup(`
         <div class="map-popup-title">12 rue de Mailly</div>
         <div class="map-popup-address">78450 Villepreux Village</div>
-        <div class="map-popup-price">850 000 €</div>
+        <div class="map-popup-price">799 000 €</div>
       `)
       .openPopup();
 
